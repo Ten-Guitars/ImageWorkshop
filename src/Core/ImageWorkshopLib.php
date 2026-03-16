@@ -227,6 +227,7 @@ class ImageWorkshopLib
      */
     public static function mergeTwoImages(GdImage $destinationImage, GdImage $sourceImage, int $destinationPosX = 0, int $destinationPosY = 0, int $sourcePosX = 0, int $sourcePosY = 0): void
     {
+        imagealphablending($destinationImage, true);
         imageCopy($destinationImage, $sourceImage, $destinationPosX, $destinationPosY, $sourcePosX, $sourcePosY, imageSX($sourceImage), imageSY($sourceImage));
     }
 }

@@ -3,6 +3,15 @@ CHANGELOG
 
 This changelog references the relevant changes (bug and security fixes).
 
+**Version 3.0.0 - TBD**
+
+* PHP 8.0+ compatibility
+* Updated type hints to use nullable union types
+* Fixed deprecation warnings (removed imagedestroy() calls)
+* Fixed implicit float-to-int conversion warnings in resize() method
+* Fixed dynamic property deprecation in test class
+* Added comprehensive test for resize() with nullable union type parameters
+
 **Version 2.2.0 - 2021-01-11**
 
 * PHP 8 compatibility

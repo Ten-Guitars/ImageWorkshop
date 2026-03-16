@@ -629,7 +629,7 @@ class ImageWorkshopLayer
      *
      * $positionX, $positionY, $position can be ignored unless you choose a new width AND a new height AND to conserve proportion.
      */
-    public function resize(string $unit = self::UNIT_PIXEL, ?int|float|null $newWidth = null, ?int|float|null $newHeight = null, bool $converseProportion = false, int $positionX = 0, int $positionY = 0, string $position = 'MM', bool $createNewLayer = true): void
+    public function resize(string $unit = self::UNIT_PIXEL, int|float|null $newWidth = null, int|float|null $newHeight = null, bool $converseProportion = false, int $positionX = 0, int $positionY = 0, string $position = 'MM', bool $createNewLayer = true): void
     {
         if (is_numeric($newWidth) || is_numeric($newHeight)) {
             $widthResizePercent = 100;

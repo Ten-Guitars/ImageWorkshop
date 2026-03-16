@@ -2,14 +2,14 @@
 
 ## Installation
 
-The class is designed for **PHP version 5.4+**, it includes new specifications like namespaces. If you use an **older version**, it can work until you remove these specifications. See how to install and use the class depending of your PHP version:
+The class is designed for **PHP version 8.0+**, it uses namespaces and modern PHP features. See how to install and use the class:
 
 ### PHP with an autoloader
 
 The PHPImageWorkshop can be installed with [Composer](https://getcomposer.org/). Run this command:
 
 ```sh
-composer require sybio/image-workshop
+composer require ten-guitars/image-workshop
 ```
 
 The PHPImageWorkshop folder added in your lib directory, just use the class namespace in your main script and that's it:

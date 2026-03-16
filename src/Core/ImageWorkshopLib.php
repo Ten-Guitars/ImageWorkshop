@@ -192,15 +192,15 @@ class ImageWorkshopLib
                         }
 
                         if ($opacity > 0) {
-                            $destRed = round((($destPixel['red'] * $destAlpha * (1 - $opacity))));
-                            $destGreen = round((($destPixel['green'] * $destAlpha * (1 - $opacity))));
-                            $destBlue = round((($destPixel['blue'] * $destAlpha * (1 - $opacity))));
-                            $srcRed = round((($srcPixel['red'] * $opacity)));
-                            $srcGreen = round((($srcPixel['green'] * $opacity)));
-                            $srcBlue = round((($srcPixel['blue'] * $opacity)));
-                            $red = round(($destRed + $srcRed) / ($destAlpha * (1 - $opacity) + $opacity));
-                            $green = round(($destGreen + $srcGreen) / ($destAlpha * (1 - $opacity) + $opacity));
-                            $blue = round(($destBlue + $srcBlue) / ($destAlpha * (1 - $opacity) + $opacity));
+                            $destRed = (int) round((($destPixel['red'] * $destAlpha * (1 - $opacity))));
+                            $destGreen = (int) round((($destPixel['green'] * $destAlpha * (1 - $opacity))));
+                            $destBlue = (int) round((($destPixel['blue'] * $destAlpha * (1 - $opacity))));
+                            $srcRed = (int) round((($srcPixel['red'] * $opacity)));
+                            $srcGreen = (int) round((($srcPixel['green'] * $opacity)));
+                            $srcBlue = (int) round((($srcPixel['blue'] * $opacity)));
+                            $red = (int) round(($destRed + $srcRed) / ($destAlpha * (1 - $opacity) + $opacity));
+                            $green = (int) round(($destGreen + $srcGreen) / ($destAlpha * (1 - $opacity) + $opacity));
+                            $blue = (int) round(($destBlue + $srcBlue) / ($destAlpha * (1 - $opacity) + $opacity));
 
                             if ($red   > 255) {
                                 $red   = 255;
@@ -214,7 +214,7 @@ class ImageWorkshopLib
                                 $blue  = 255;
                             }
 
-                            $alpha = round((1 - $alpha) * 127);
+                            $alpha = (int) round((1 - $alpha) * 127);
                             $color = imageColorAllocateAlpha($destImg, $red, $green, $blue, (int) $alpha);
                             imageSetPixel($destImg, $x + $destX, $y + $destY, $color);
                         }

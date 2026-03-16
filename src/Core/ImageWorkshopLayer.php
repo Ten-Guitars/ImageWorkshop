@@ -947,9 +947,9 @@ class ImageWorkshopLayer
 
         if ($this->width / $this->height <= $width / $height) {
             $newWidth = $this->width;
-            $newHeight = round($height * ($this->width / $width));
+            $newHeight = (int) round($height * ($this->width / $width));
         } else {
-            $newWidth = round($width * ($this->height / $height));
+            $newWidth = (int) round($width * ($this->height / $height));
             $newHeight = $this->height;
         }
 
@@ -1035,8 +1035,8 @@ class ImageWorkshopLayer
 
             foreach ($this->layers as $layerId => $layer) {
                 $layerSelfOldCenterPosition = array(
-                    'x' => $layer->width / 2,
-                    'y' => $layer->height / 2,
+                    'x' => (int) ($layer->width / 2),
+                    'y' => (int) ($layer->height / 2),
                 );
 
                 $smallImageCenter = array(
@@ -1054,17 +1054,17 @@ class ImageWorkshopLayer
                 $b = $ro * sin(($teta + $degrees) * pi() / 180);
 
                 if ($degrees > 0 && $degrees <= 90) {
-                    $newPositionX = $a - ($this->layers[$layerId]->width / 2) + $oldHeight * sin(($degrees * pi()) / 180);
-                    $newPositionY = $b - ($this->layers[$layerId]->height / 2);
+                    $newPositionX = (int) ($a - ($this->layers[$layerId]->width / 2) + $oldHeight * sin(($degrees * pi()) / 180));
+                    $newPositionY = (int) ($b - ($this->layers[$layerId]->height / 2));
                 } elseif ($degrees > 90 && $degrees <= 180) {
-                    $newPositionX = $a - ($this->layers[$layerId]->width / 2) + $this->width;
-                    $newPositionY = $b - ($this->layers[$layerId]->height / 2) + $oldHeight * (-cos(($degrees) * pi() / 180));
+                    $newPositionX = (int) ($a - ($this->layers[$layerId]->width / 2) + $this->width);
+                    $newPositionY = (int) ($b - ($this->layers[$layerId]->height / 2) + $oldHeight * (-cos(($degrees) * pi() / 180)));
                 } elseif ($degrees > 180 && $degrees <= 270) {
-                    $newPositionX = $a - ($this->layers[$layerId]->width / 2) + $oldWidth * (-cos(($degrees) * pi() / 180));
-                    $newPositionY = $b - ($this->layers[$layerId]->height / 2) + $this->height;
+                    $newPositionX = (int) ($a - ($this->layers[$layerId]->width / 2) + $oldWidth * (-cos(($degrees) * pi() / 180)));
+                    $newPositionY = (int) ($b - ($this->layers[$layerId]->height / 2) + $this->height);
                 } else {
-                    $newPositionX = $a - ($this->layers[$layerId]->width / 2);
-                    $newPositionY = $b - ($this->layers[$layerId]->height / 2) + $oldWidth * (-sin(($degrees) * pi() / 180));
+                    $newPositionX = (int) ($a - ($this->layers[$layerId]->width / 2));
+                    $newPositionY = (int) ($b - ($this->layers[$layerId]->height / 2) + $oldWidth * (-sin(($degrees) * pi() / 180)));
                 }
 
                 $this->layerPositions[$layerId] = array(

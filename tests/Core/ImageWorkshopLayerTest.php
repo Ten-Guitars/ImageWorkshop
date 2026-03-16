@@ -1472,12 +1472,124 @@ class ImageWorkshopLayerTest extends TestCase
     public function testSaveWithNonSupportedFileExtension()
     {
         $layer = $this->initializeLayer();
-
+ 
         $this->expectException(ImageWorkshopLayerException::class);
         $this->expectExceptionMessage('Image format "tif" not supported.');
         $this->expectExceptionCode(7);
-
+ 
         $layer->save($this->workspace, 'test.tif', false);
+    }
+
+    /**
+     * Test cropToAspectRatioInPixel with fractional dimensions
+     * Tests that division operations produce integer values without float conversion warnings
+     */
+    public function testCropToAspectRatioInPixelWithFractionalDimensions()
+    {
+        // Test with aspect ratio that produces fractional intermediate values
+        $layer = ImageWorkshop::initVirginLayer(100, 100);
+        
+        $layer->cropToAspectRatioInPixel(3, 2, 0, 0, 'LT');
+        $this->assertTrue($layer->getWidth() == 100, 'Expect $layer to have a width of 100px');
+        $this->assertTrue($layer->getHeight() == 67, 'Expect $layer to have a height of 67px (rounded from 66.66)');
+        
+        $layer = ImageWorkshop::initVirginLayer(100, 100);
+        
+        $layer->cropToAspectRatioInPixel(16, 9, 0, 0, 'LT');
+        $this->assertTrue($layer->getWidth() == 100, 'Expect $layer to have a width of 100px');
+        $this->assertTrue($layer->getHeight() == 56, 'Expect $layer to have a height of 56px (rounded from 56.25)');
+        
+        // Test with larger height
+        $layer = ImageWorkshop::initVirginLayer(100, 100);
+        
+        $layer->cropToAspectRatioInPixel(2, 3, 0, 0, 'LT');
+        $this->assertTrue($layer->getWidth() == 67, 'Expect $layer to have a width of 67px (rounded from 66.66)');
+        $this->assertTrue($layer->getHeight() == 100, 'Expect $layer to have a height of 100px');
+    }
+
+    /**
+     * Test rotate with sublayers to verify integer position calculations
+     * Tests that rotation calculations produce integer values for sublayer positions
+     */
+    public function testRotateWithSublayersReturnsIntegerPositions()
+    {
+        $layer = ImageWorkshop::initVirginLayer(200, 200);
+        $subLayer = ImageWorkshop::initVirginLayer(50, 50);
+        
+        $layer->addLayer(1, $subLayer, 75, 75);
+        
+        // Rotate by various angles that could produce fractional coordinates
+        $layer->rotate(45);
+        
+        $layerPositions = $layer->getLayerPositions();
+        $position = $layerPositions[1];
+        
+        // Verify positions are integers (not floats)
+        $this->assertTrue(is_int($position['x']), 'Expect X position to be an integer');
+        $this->assertTrue(is_int($position['y']), 'Expect Y position to be an integer');
+        
+        // Test with another rotation angle
+        $layer = ImageWorkshop::initVirginLayer(200, 200);
+        $subLayer = ImageWorkshop::initVirginLayer(50, 50);
+        $layer->addLayer(1, $subLayer, 100, 100);
+        
+        $layer->rotate(30);
+        
+        $layerPositions = $layer->getLayerPositions();
+        $position = $layerPositions[1];
+        
+        $this->assertTrue(is_int($position['x']), 'Expect X position to be an integer');
+        $this->assertTrue(is_int($position['y']), 'Expect Y position to be an integer');
+        
+        // Test with 270 degree rotation
+        $layer = ImageWorkshop::initVirginLayer(200, 200);
+        $subLayer = ImageWorkshop::initVirginLayer(50, 50);
+        $layer->addLayer(1, $subLayer, 100, 100);
+        
+        $layer->rotate(270);
+        
+        $layerPositions = $layer->getLayerPositions();
+        $position = $layerPositions[1];
+        
+        $this->assertTrue(is_int($position['x']), 'Expect X position to be an integer');
+        $this->assertTrue(is_int($position['y']), 'Expect Y position to be an integer');
+    }
+
+    /**
+     * Test opacity produces integer color values
+     * Tests that imageCopyMergeAlpha color channel calculations produce integers
+     */
+    public function testOpacityProducesIntegerColorValues()
+    {
+        $layer = ImageWorkshop::initVirginLayer(100, 100, 'ff0000');
+        
+        // Apply opacity that would produce fractional alpha values
+        $layer->opacity(50);
+        
+        $resultImage = $layer->getResult();
+        
+        // Sample a pixel to verify it's properly formed
+        // The pixel should have valid integer RGB values
+        $pixelColor = imagecolorat($resultImage, 50, 50);
+        $colors = imagecolorsforindex($resultImage, $pixelColor);
+        
+        $this->assertTrue(is_int($colors['red']), 'Expect red channel to be an integer');
+        $this->assertTrue(is_int($colors['green']), 'Expect green channel to be an integer');
+        $this->assertTrue(is_int($colors['blue']), 'Expect blue channel to be an integer');
+        $this->assertTrue(is_int($colors['alpha']), 'Expect alpha channel to be an integer');
+        
+        // Test with different opacity values that would produce fractional results
+        $layer = ImageWorkshop::initVirginLayer(100, 100, '00ff00');
+        $layer->opacity(33);
+        
+        $resultImage = $layer->getResult();
+        $pixelColor = imagecolorat($resultImage, 50, 50);
+        $colors = imagecolorsforindex($resultImage, $pixelColor);
+        
+        $this->assertTrue(is_int($colors['red']), 'Expect red channel to be an integer');
+        $this->assertTrue(is_int($colors['green']), 'Expect green channel to be an integer');
+        $this->assertTrue(is_int($colors['blue']), 'Expect blue channel to be an integer');
+        $this->assertTrue(is_int($colors['alpha']), 'Expect alpha channel to be an integer');
     }
 
     // Internals

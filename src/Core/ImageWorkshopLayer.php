@@ -469,7 +469,7 @@ class ImageWorkshopLayer
     /**
      * Change the position of a sublayer for new positions
      */
-    public function changePosition(int $layerId, int $newPosX = null, int $newPosY = null): bool
+    public function changePosition(int $layerId, ?int $newPosX = null, ?int $newPosY = null): bool
     {
         // if the sublayer exists in the stack
         if ($this->isLayerInIndex($layerId)) {
@@ -492,7 +492,7 @@ class ImageWorkshopLayer
      *
      * @return array{x: int, y: int}|false
      */
-    public function applyTranslation(int $layerId, int $addedPosX = null, int $addedPosY = null): array|bool
+    public function applyTranslation(int $layerId, ?int $addedPosX = null, ?int $addedPosY = null): array|bool
     {
         // if the sublayer exists in the stack
         if ($this->isLayerInIndex($layerId)) {
@@ -588,7 +588,7 @@ class ImageWorkshopLayer
      *
      * $positionX, $positionY, $position can be ignored unless you choose a new width AND a new height AND to conserve proportion.
      */
-    public function resizeInPixel(int $newWidth = null, int $newHeight = null, bool $converseProportion = false, int $positionX = 0, int $positionY = 0, string $position = 'MM'): void
+    public function resizeInPixel(?int $newWidth = null, ?int $newHeight = null, bool $converseProportion = false, int $positionX = 0, int $positionY = 0, string $position = 'MM'): void
     {
         $this->resize(self::UNIT_PIXEL, $newWidth, $newHeight, $converseProportion, $positionX, $positionY, $position);
     }
@@ -600,7 +600,7 @@ class ImageWorkshopLayer
      *
      * $positionX, $positionY, $position can be ignored unless you choose a new width AND a new height AND to conserve proportion.
      */
-    public function resizeInPercent(float $percentWidth = null, float $percentHeight = null, bool $converseProportion = false, int $positionX = 0, int $positionY = 0, string $position = 'MM'): void
+     public function resizeInPercent(?float $percentWidth = null, ?float $percentHeight = null, bool $converseProportion = false, int $positionX = 0, int $positionY = 0, string $position = 'MM'): void
     {
         $this->resize(self::UNIT_PERCENT, $percentWidth, $percentHeight, $converseProportion, $positionX, $positionY, $position);
     }
@@ -1105,7 +1105,7 @@ class ImageWorkshopLayer
      *
      * @param int $filterType (http://www.php.net/manual/en/function.imagefilter.php)
      */
-    public function applyFilter(int $filterType, int $arg1 = null, int $arg2 = null, int $arg3 = null, int $arg4 = null, bool $recursive = false): void
+    public function applyFilter(int $filterType, ?int $arg1 = null, ?int $arg2 = null, ?int $arg3 = null, ?int $arg4 = null, bool $recursive = false): void
     {
         if ($filterType === IMG_FILTER_COLORIZE) {
             imagefilter($this->image, $filterType, $arg1, $arg2, $arg3, $arg4);
@@ -1201,7 +1201,7 @@ class ImageWorkshopLayer
      * $backgroundColor is really usefull if you want to save a JPG or GIF, because the transparency of the background
      * would be remove for a colored background, so you should choose a color like "ffffff" (white)
      */
-    public function getResult(string $backgroundColor = null): GdImage
+    public function getResult(?string $backgroundColor = null): GdImage
     {
         $imagesToMerge = array();
         ksort($this->layerLevels);
@@ -1255,7 +1255,7 @@ class ImageWorkshopLayer
      *     $imageQuality = 95
      *     $backgroundColor = "ffffff"
      */
-    public function save(string $folder, string $imageName, bool $createFolders = true, string $backgroundColor = null, int $imageQuality = 75, bool $interlace = false): void
+    public function save(string $folder, string $imageName, bool $createFolders = true, ?string $backgroundColor = null, int $imageQuality = 75, bool $interlace = false): void
     {
         if (is_file($folder)) {
             throw new ImageWorkshopLayerException(sprintf('Destination folder "%s" is a file.', $folder), self::ERROR_NOT_WRITABLE_FOLDER);

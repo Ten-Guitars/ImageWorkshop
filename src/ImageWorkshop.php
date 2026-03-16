@@ -106,7 +106,7 @@ class ImageWorkshop
     /**
      * Initialize a text layer
      */
-    public static function initTextLayer(string $text, string $fontPath, int $fontSize = 13, string $fontColor = 'ffffff', int $textRotation = 0, string $backgroundColor = null): ImageWorkshopLayer
+    public static function initTextLayer(string $text, string $fontPath, int $fontSize = 13, string $fontColor = 'ffffff', int $textRotation = 0, ?string $backgroundColor = null): ImageWorkshopLayer
     {
         $textDimensions = ImageWorkshopLib::getTextBoxDimension($fontSize, $textRotation, $fontPath, $text);
 
@@ -119,7 +119,7 @@ class ImageWorkshop
     /**
      * Initialize a new virgin layer
      */
-    public static function initVirginLayer(int $width = 100, int $height = 100, string $backgroundColor = null): ImageWorkshopLayer
+    public static function initVirginLayer(int $width = 100, int $height = 100, ?string $backgroundColor = null): ImageWorkshopLayer
     {
         $opacity = 0;
 

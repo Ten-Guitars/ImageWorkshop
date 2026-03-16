@@ -1224,16 +1224,14 @@ class ImageWorkshopLayer
             ImageWorkshopLib::mergeTwoImages($mergedImage, $image);
         }
 
-        $opacity = 127;
-
-        if ($backgroundColor !== 'transparent') {
+        // Only create background if backgroundColor is specified and not null/transparent
+        if ($backgroundColor !== null && $backgroundColor !== 'transparent') {
             $opacity = 0;
+            $backgroundImage = ImageWorkshopLib::generateImage($this->width, $this->height, (string) $backgroundColor, $opacity);
+            ImageWorkshopLib::mergeTwoImages($backgroundImage, $mergedImage);
+            $mergedImage = $backgroundImage;
+            unset($backgroundImage);
         }
-
-        $backgroundImage = ImageWorkshopLib::generateImage($this->width, $this->height, (string) $backgroundColor, $opacity);
-        ImageWorkshopLib::mergeTwoImages($backgroundImage, $mergedImage);
-        $mergedImage = $backgroundImage;
-        unset($backgroundImage);
 
         return $mergedImage;
     }

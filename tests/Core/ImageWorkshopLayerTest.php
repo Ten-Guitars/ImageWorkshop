@@ -1508,6 +1508,46 @@ class ImageWorkshopLayerTest extends TestCase
     }
 
     /**
+     * Test initVirginLayer with nullable backgroundColor
+     */
+    public function testInitVirginLayerWithNullBackground()
+    {
+        $layer = ImageWorkshop::initVirginLayer(100, 100, null);
+        $this->assertTrue($layer->getWidth() == 100, 'Expect $layer to have a width of 100px');
+        $this->assertTrue($layer->getHeight() == 100, 'Expect $layer to have a height of 100px');
+    }
+
+    /**
+     * Test initVirginLayer with explicit backgroundColor
+     */
+    public function testInitVirginLayerWithBackground()
+    {
+        $layer = ImageWorkshop::initVirginLayer(100, 100, 'ff0000');
+        $this->assertTrue($layer->getWidth() == 100, 'Expect $layer to have a width of 100px');
+        $this->assertTrue($layer->getHeight() == 100, 'Expect $layer to have a height of 100px');
+    }
+
+    /**
+     * Test getResult with nullable backgroundColor
+     */
+    public function testGetResultWithNullBackground()
+    {
+        $layer = ImageWorkshop::initVirginLayer(100, 100);
+        $result = $layer->getResult(null);
+        $this->assertTrue($result instanceof \GdImage, 'Expect result to be a GD image resource');
+    }
+
+    /**
+     * Test getResult with explicit backgroundColor
+     */
+    public function testGetResultWithBackground()
+    {
+        $layer = ImageWorkshop::initVirginLayer(100, 100);
+        $result = $layer->getResult('ff0000');
+        $this->assertTrue($result instanceof \GdImage, 'Expect result to be a GD image resource');
+    }
+
+    /**
      * Test rotate with sublayers to verify integer position calculations
      * Tests that rotation calculations produce integer values for sublayer positions
      */

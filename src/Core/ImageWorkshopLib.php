@@ -147,8 +147,6 @@ class ImageWorkshopLib
             }
         }
 
-        imagedestroy($img);
-
         return array(
             'left' => $left - $rleft,
             'top' => $top - $rtop,

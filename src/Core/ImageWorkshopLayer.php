@@ -600,7 +600,7 @@ class ImageWorkshopLayer
      *
      * $positionX, $positionY, $position can be ignored unless you choose a new width AND a new height AND to conserve proportion.
      */
-     public function resizeInPercent(?float $percentWidth = null, ?float $percentHeight = null, bool $converseProportion = false, int $positionX = 0, int $positionY = 0, string $position = 'MM'): void
+    public function resizeInPercent(?float $percentWidth = null, ?float $percentHeight = null, bool $converseProportion = false, int $positionX = 0, int $positionY = 0, string $position = 'MM'): void
     {
         $this->resize(self::UNIT_PERCENT, $percentWidth, $percentHeight, $converseProportion, $positionX, $positionY, $position);
     }
@@ -749,7 +749,7 @@ class ImageWorkshopLayer
                 $this->layers[$key] = $layer;
             }
 
-            $this->resizeBackground($newWidth, $newHeight); // Resize the layer
+            $this->resizeBackground((int) $newWidth, (int) $newHeight); // Resize the layer
         }
     }
 
@@ -883,7 +883,6 @@ class ImageWorkshopLayer
             $layerTmp = ImageWorkshop::initVirginLayer($width, $height);
             $layerClone = ImageWorkshop::initVirginLayer($this->width, $this->height);
 
-            imagedestroy($layerClone->image);
             $layerClone->image = $this->image;
 
             $layerTmp->addLayer(1, $layerClone, -$positionX, -$positionY, $position);
@@ -1483,7 +1482,6 @@ class ImageWorkshopLayer
      */
     public function delete(): void
     {
-        imagedestroy($this->image);
         $this->clearStack();
     }
 

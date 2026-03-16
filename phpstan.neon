@@ -7,3 +7,6 @@ parameters:
         -
             message: '#Left side of && is always true#'
             path: src/Core/ImageWorkshopLayer.php
+        -
+            message: '#Comparison operation ">=" between int<0, max>\|false and 0 is always true#'
+            path: src/Core/ImageWorkshopLib.php

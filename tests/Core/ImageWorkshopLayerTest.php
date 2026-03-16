@@ -1123,6 +1123,37 @@ class ImageWorkshopLayerTest extends TestCase
     }
 
     /**
+     * Test resize with nullable union type parameters
+     * Tests that resize accepts int, float, and null for width/height parameters
+     */
+    public function testResizeWithNullableUnionTypes()
+    {
+        // Test with null parameters (no change expected)
+        $layer = $this->initializeLayer(1);
+        $layer->resize('pixel', null, null, false);
+        $this->assertTrue($layer->getWidth() == 100, 'Expect $layer to have a width of 100px');
+        $this->assertTrue($layer->getHeight() == 75, 'expect $layer to have a height of 75px');
+        
+        // Test with int width and int height
+        $layer = $this->initializeLayer(1);
+        $layer->resize('pixel', 50, 40, false);
+        $this->assertTrue($layer->getWidth() == 50, 'Expect $layer to have a width of 50px');
+        $this->assertTrue($layer->getHeight() == 40, 'expect $layer to have a height of 40px');
+        
+        // Test with float width
+        $layer = $this->initializeLayer(1);
+        $layer->resize('pixel', 99.5, null, false);
+        $this->assertTrue($layer->getWidth() == 99, 'expect $layer to have a width of 99px');
+        $this->assertTrue($layer->getHeight() == 75, 'expect layer to have unchanged height');
+        
+        // Test with float height
+        $layer = $this->initializeLayer(1);
+        $layer->resize('pixel', null, 66.7, false);
+        $this->assertTrue($layer->getWidth() == 100, 'expect layer to have unchanged width');
+        $this->assertTrue($layer->getHeight() == 75, 'expect layer to have unchanged height');
+    }
+
+    /**
      * Test cropInPixel
      */
     public function testCropInPixel()
